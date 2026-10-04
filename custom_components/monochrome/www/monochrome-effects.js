@@ -262,11 +262,13 @@
     };
     tick();
   }
+  // глич только под темой Monochrome: модуль загружен во всём интерфейсе, а у других тем этой переменной нет
+  const monochromeTheme = () => rootVar("--monochrome-bg-tint") !== "";
   (function glitchLoop() {
     const every = parseFloat(OPT.every) || parseFloat(rootVar("--monochrome-glitch-every")) || 25;
     const delay = (every * (0.6 + Math.random() * 0.8)) * 1000;   // ±40% от среднего
     setTimeout(() => {
-      if (!reduceMotion && !document.hidden && optOn("glitch", rootVar("--monochrome-glitch") === "1")) glitch();
+      if (!reduceMotion && !document.hidden && monochromeTheme() && optOn("glitch", rootVar("--monochrome-glitch") === "1")) glitch();
       glitchLoop();
     }, delay);
   })();
@@ -277,7 +279,7 @@
     const conn = document.querySelector("home-assistant")?.hass?.connection;
     if (!conn) { if (tries < 120) setTimeout(() => subscribeGlitch(tries + 1), 500); return; }
     conn.subscribeMessage(ev => {
-      if (!reduceMotion && !document.hidden) glitch(ev.intensity, ev.duration);
+      if (!reduceMotion && !document.hidden && monochromeTheme()) glitch(ev.intensity, ev.duration);
     }, { type: "monochrome/subscribe" }).catch(e => console.warn("monochrome-effects: glitch service unavailable", e));
   })(0);
 

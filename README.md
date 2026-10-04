@@ -91,7 +91,7 @@ reload the browser page.
 ### Triggering a glitch from automations
 
 The `monochrome.glitch` service runs a glitch right away on every open Home Assistant tab that uses
-a Monochrome theme. It works even when random glitches are turned off.
+a Monochrome theme. It works even when random glitches are turned off. Tabs that use any other theme are not affected.
 
 | Field | Default | Range | Meaning |
 |---|---|---|---|
