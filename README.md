@@ -46,7 +46,7 @@ e.g. `/local/logo.svg#monochrome-tint`. Camera snapshots and photos are never al
 
 ## Credits & licenses
 
-- Code and themes: MIT (see `LICENSE`)
+- Code and themes: MIT (see `LICENSE`); third-party components — see `THIRD_PARTY_NOTICES.md`
 - PxPlus IBM VGA 8x16 — Ultimate Oldschool PC Font Pack by VileR, https://int10h.org — CC BY-SA 4.0
 - JetBrains Mono — SIL Open Font License 1.1
 - Background algorithm — Fractogenesis by Serhii Herasymov, https://github.com/xcontcom/fractogenesis — MIT
