@@ -1,14 +1,20 @@
 {
   "domain": "monochrome",
   "name": "Monochrome",
-  "codeowners": ["@saintleningrad-prog"],
+  "codeowners": [
+    "@saintleningrad-prog"
+  ],
   "config_flow": true,
-  "dependencies": ["frontend", "http"],
+  "dependencies": [
+    "frontend",
+    "http",
+    "websocket_api"
+  ],
   "documentation": "https://github.com/saintleningrad-prog/ha-monochrome",
   "integration_type": "service",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/saintleningrad-prog/ha-monochrome/issues",
   "requirements": [],
   "single_config_entry": true,
-  "version": "0.1.1"
+  "version": "0.2.0"
 }

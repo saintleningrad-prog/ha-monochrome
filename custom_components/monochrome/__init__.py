@@ -3,7 +3,10 @@
 On setup the integration
   * copies the four Monochrome themes into <config>/themes and reloads themes,
   * serves the effects module and fonts under /monochrome_static,
-  * registers the effects module for the whole frontend (like ``frontend: extra_module_url``).
+  * registers the effects module for the whole frontend (like ``frontend: extra_module_url``),
+  * provides the ``monochrome.glitch`` service, delivered to open browser tabs over the HA websocket.
+
+Effect options can also be set in configuration.yaml (``monochrome:``); YAML then overrides the UI options.
 """
 
 from __future__ import annotations
@@ -13,11 +16,16 @@ import logging
 import shutil
 from pathlib import Path
 
-from homeassistant.components import frontend
+import voluptuous as vol
+
+from homeassistant.components import frontend, websocket_api
 from homeassistant.components.frontend import add_extra_js_url, remove_extra_js_url
 from homeassistant.components.http import StaticPathConfig
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
+from homeassistant.core import HomeAssistant, ServiceCall, callback
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.dispatcher import async_dispatcher_connect, async_dispatcher_send
+from homeassistant.helpers.typing import ConfigType
 from homeassistant.util.yaml import load_yaml
 
 from .const import (
@@ -26,6 +34,10 @@ from .const import (
     CONF_GLITCH_EVERY,
     CONF_PATTERN,
     DEFAULTS,
+    ATTR_DURATION,
+    ATTR_INTENSITY,
+    SERVICE_GLITCH,
+    SIGNAL_GLITCH,
     DOMAIN,
     MODULE_FILE,
     THEME_NAMES,
@@ -40,6 +52,66 @@ _LOGGER = logging.getLogger(__name__)
 
 DATA_THEMES = getattr(frontend, "DATA_THEMES", "frontend_themes")
 EVENT_THEMES_UPDATED = getattr(frontend, "EVENT_THEMES_UPDATED", "themes_updated")
+
+
+CONFIG_SCHEMA = vol.Schema(
+    {
+        DOMAIN: vol.Any(
+            None,
+            vol.Schema(
+                {
+                    vol.Optional(CONF_PATTERN): cv.boolean,
+                    vol.Optional(CONF_BOOT): cv.boolean,
+                    vol.Optional(CONF_GLITCH): cv.boolean,
+                    vol.Optional(CONF_GLITCH_EVERY): vol.All(vol.Coerce(int), vol.Range(min=5, max=600)),
+                }
+            ),
+        )
+    },
+    extra=vol.ALLOW_EXTRA,
+)
+
+GLITCH_SCHEMA = vol.Schema(
+    {
+        vol.Optional(ATTR_INTENSITY, default=3): vol.All(vol.Coerce(int), vol.Range(min=1, max=10)),
+        vol.Optional(ATTR_DURATION, default=0.3): vol.All(vol.Coerce(float), vol.Range(min=0.05, max=5)),
+    }
+)
+
+
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Register the glitch service and websocket command; apply options from configuration.yaml."""
+
+    async def _glitch(call: ServiceCall) -> None:
+        async_dispatcher_send(hass, SIGNAL_GLITCH, dict(call.data))
+
+    hass.services.async_register(DOMAIN, SERVICE_GLITCH, _glitch, schema=GLITCH_SCHEMA)
+    websocket_api.async_register_command(hass, _ws_subscribe)
+
+    if DOMAIN in config:
+        options = {**DEFAULTS, **(config[DOMAIN] or {})}
+        hass.data.setdefault(DOMAIN, {})["yaml"] = True
+        entries = hass.config_entries.async_entries(DOMAIN)
+        if not entries:
+            hass.async_create_task(
+                hass.config_entries.flow.async_init(DOMAIN, context={"source": SOURCE_IMPORT}, data=options)
+            )
+        elif dict(entries[0].options) != options:
+            hass.config_entries.async_update_entry(entries[0], options=options)
+    return True
+
+
+@websocket_api.websocket_command({vol.Required("type"): "monochrome/subscribe"})
+@callback
+def _ws_subscribe(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict) -> None:
+    """Browser tabs subscribe here; every monochrome.glitch call is forwarded to them."""
+
+    @callback
+    def forward(data: dict) -> None:
+        connection.send_message(websocket_api.event_message(msg["id"], data))
+
+    connection.subscriptions[msg["id"]] = async_dispatcher_connect(hass, SIGNAL_GLITCH, forward)
+    connection.send_result(msg["id"])
 
 
 def _option(entry: ConfigEntry, key: str):

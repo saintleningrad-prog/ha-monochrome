@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 DOMAIN = "monochrome"
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 
 URL_BASE = "/monochrome_static"
 MODULE_FILE = "monochrome-effects.js"
@@ -32,3 +32,8 @@ DEFAULTS = {
     CONF_BOOT: True,
     CONF_PATTERN: True,
 }
+
+SERVICE_GLITCH = "glitch"
+ATTR_INTENSITY = "intensity"
+ATTR_DURATION = "duration"
+SIGNAL_GLITCH = f"{DOMAIN}_glitch"

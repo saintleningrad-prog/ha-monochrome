@@ -232,11 +232,14 @@
   // «уменьшить движение» не срабатывает. Включение и частота — из темы: --monochrome-glitch (1/0),
   // --monochrome-glitch-every (среднее число секунд между сбоями).
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function glitch() {
+  // intensity 1..10 и duration (с) приходят от сервиса monochrome.glitch; без них обычный случайный сбой.
+  function glitch(intensity, duration) {
     const host = document.createElement("div");
     host.style.cssText = "position:fixed;inset:0;pointer-events:none;z-index:2147483646;overflow:hidden";
     const strips = [];
-    const n = 2 + Math.floor(Math.random() * 3);
+    const n = intensity ? intensity + Math.floor(Math.random() * 2) : 2 + Math.floor(Math.random() * 3);
+    const shift = intensity ? intensity * 13 : 40;
+    const frames = duration ? Math.max(1, Math.round(duration * 1000 / 60)) : 5;
     for (let i = 0; i < n; i++) {
       const s = document.createElement("div");
       const fx = Math.random() < 0.5 ? "invert(1)" : "brightness(1.9) contrast(1.6)";
@@ -252,9 +255,9 @@
       strips.forEach(s => {
         s.style.top = (Math.random() * 100).toFixed(1) + "%";
         s.style.height = (0.4 + Math.random() * 4).toFixed(2) + "%";
-        s.style.transform = `translateX(${Math.round((Math.random() - 0.5) * 40)}px)`;
+        s.style.transform = `translateX(${Math.round((Math.random() - 0.5) * shift)}px)`;
       });
-      if (++frame < 5) setTimeout(tick, 45 + Math.random() * 30);
+      if (++frame < frames) setTimeout(tick, 45 + Math.random() * 30);
       else { host.remove(); body.style.textShadow = prevShadow; }
     };
     tick();
@@ -267,6 +270,16 @@
       glitchLoop();
     }, delay);
   })();
+
+  // Глич по команде из HA (сервис monochrome.glitch): подписка на websocket-команду интеграции.
+  // Ждём подключения интерфейса к HA (до 60 с), дальше переподключения обрабатывает сама библиотека HA.
+  (function subscribeGlitch(tries) {
+    const conn = document.querySelector("home-assistant")?.hass?.connection;
+    if (!conn) { if (tries < 120) setTimeout(() => subscribeGlitch(tries + 1), 500); return; }
+    conn.subscribeMessage(ev => {
+      if (!reduceMotion && !document.hidden) glitch(ev.intensity, ev.duration);
+    }, { type: "monochrome/subscribe" }).catch(e => console.warn("monochrome-effects: glitch service unavailable", e));
+  })(0);
 
   // Смена темы в профиле: HA переписывает переменные в style у <html>. Следим только за этим атрибутом
   // (срабатывает лишь в момент смены темы) и перерисовываем узор, если изменился его оттенок.

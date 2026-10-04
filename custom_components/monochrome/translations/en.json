@@ -22,6 +22,25 @@
           "glitch_every": "Average seconds between glitches"
         }
       }
+    },
+    "abort": {
+      "yaml_managed": "Effect options are set in configuration.yaml (monochrome:). Edit them there and restart Home Assistant."
+    }
+  },
+  "services": {
+    "glitch": {
+      "name": "Glitch",
+      "description": "Run a glitch effect on every open Home Assistant tab that uses a Monochrome theme.",
+      "fields": {
+        "intensity": {
+          "name": "Intensity",
+          "description": "1 (subtle) to 10 (heavy): number of distorted strips and how far they shift."
+        },
+        "duration": {
+          "name": "Duration",
+          "description": "How long the glitch lasts, in seconds."
+        }
+      }
     }
   }
 }

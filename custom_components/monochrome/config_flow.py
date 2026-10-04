@@ -24,6 +24,12 @@ class MonochromeConfigFlow(ConfigFlow, domain=DOMAIN):
             return self.async_create_entry(title="Monochrome", data={})
         return self.async_show_form(step_id="user")
 
+    async def async_step_import(self, import_data: dict[str, Any]) -> ConfigFlowResult:
+        """Create the entry from the ``monochrome:`` block in configuration.yaml."""
+        await self.async_set_unique_id(DOMAIN)
+        self._abort_if_unique_id_configured()
+        return self.async_create_entry(title="Monochrome", data={}, options=import_data)
+
     @staticmethod
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
@@ -34,6 +40,8 @@ class MonochromeOptionsFlow(OptionsFlow):
     """Effects settings."""
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        if self.hass.data.get(DOMAIN, {}).get("yaml"):
+            return self.async_abort(reason="yaml_managed")
         if user_input is not None:
             return self.async_create_entry(data=user_input)
 

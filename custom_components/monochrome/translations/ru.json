@@ -22,6 +22,25 @@
           "glitch_every": "Среднее число секунд между «сбоями»"
         }
       }
+    },
+    "abort": {
+      "yaml_managed": "Параметры эффектов заданы в configuration.yaml (monochrome:). Измените их там и перезапустите Home Assistant."
+    }
+  },
+  "services": {
+    "glitch": {
+      "name": "Глич",
+      "description": "Запустить глич-эффект на всех открытых вкладках Home Assistant с темой Monochrome.",
+      "fields": {
+        "intensity": {
+          "name": "Сила",
+          "description": "От 1 (слабо) до 10 (сильно): число искажённых полос и величина сдвига."
+        },
+        "duration": {
+          "name": "Длительность",
+          "description": "Сколько длится сбой, в секундах."
+        }
+      }
     }
   }
 }
