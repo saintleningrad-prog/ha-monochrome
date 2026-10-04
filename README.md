@@ -3,6 +3,21 @@
 Four themes in the style of old monochrome CRT terminals, plus effects that make the whole
 Home Assistant UI feel like a phosphor screen.
 
+> I had wanted to build something like this for Home Assistant for a long time. Thanks to the modern
+> world of 04.10.2026, it did not take me long, and the result turned out better than I expected.
+
+## Highlights
+
+1. **Glitch effect, also triggered by events.** Short CRT "signal loss" bursts appear at random
+   intervals, and any automation can fire one on demand with the `monochrome.glitch` service:
+   a door opening, a doorbell or an alarm makes every open dashboard flicker.
+2. **Random background made with generative art.** Every page load grows a brand new pattern with
+   the Fractogenesis "2D Convolution" algorithm, dithered and tinted to the current phosphor.
+   No two backgrounds are ever the same.
+3. **Authentic CRT look.** IBM VGA 8x16 font with full Cyrillic, scanlines, vignette, phosphor glow,
+   double card frames and a BIOS-style boot screen.
+4. **Four phosphors** in one package, installed with a single HACS integration.
+
 | Theme | Look |
 |---|---|
 | **Monochrome Green** | green P1 phosphor on black, active items in yellow |
@@ -11,16 +26,16 @@ Home Assistant UI feel like a phosphor screen.
 | **Monochrome Paperwhite** | light: dark text on white, black double frames |
 
 ### Green
-![Monochrome Green](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/green.png)
+![Monochrome Green](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/green.png?v=2)
 
 ### Amber
-![Monochrome Amber](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/amber.png)
+![Monochrome Amber](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/amber.png?v=2)
 
 ### Paperblack
-![Monochrome Paperblack](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/paperblack.png)
+![Monochrome Paperblack](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/paperblack.png?v=2)
 
 ### Paperwhite
-![Monochrome Paperwhite](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/paperwhite.png)
+![Monochrome Paperwhite](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/paperwhite.png?v=2)
 
 ### Boot screen
 ![Boot screen](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/boot.png)
