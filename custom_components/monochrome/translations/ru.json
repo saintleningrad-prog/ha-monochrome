@@ -1,0 +1,27 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Monochrome",
+        "description": "Устанавливает четыре темы в стиле старых монохромных мониторов (Green, Amber, Paperblack, Paperwhite) и их эффекты. После установки выберите тему в профиле."
+      }
+    },
+    "abort": {
+      "already_configured": "Monochrome уже установлена."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Эффекты Monochrome",
+        "description": "Изменения применяются после обновления страницы (Ctrl+F5).",
+        "data": {
+          "pattern": "Живой узор фона",
+          "boot": "Заставка при открытии",
+          "glitch": "Глич-эффект",
+          "glitch_every": "Среднее число секунд между «сбоями»"
+        }
+      }
+    }
+  }
+}

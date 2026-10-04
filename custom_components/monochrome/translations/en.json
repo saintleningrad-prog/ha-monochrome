@@ -1,0 +1,27 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Monochrome",
+        "description": "Installs four retro monochrome-monitor themes (Green, Amber, Paperblack, Paperwhite) and their effects. After setup pick a theme in your profile."
+      }
+    },
+    "abort": {
+      "already_configured": "Monochrome is already set up."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Monochrome effects",
+        "description": "Changes apply after reloading the browser page (Ctrl+F5).",
+        "data": {
+          "pattern": "Live generated background pattern",
+          "boot": "Boot screen on first open",
+          "glitch": "Glitch effect",
+          "glitch_every": "Average seconds between glitches"
+        }
+      }
+    }
+  }
+}
