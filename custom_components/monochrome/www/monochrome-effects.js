@@ -141,7 +141,7 @@
     return !touch && px > 1600 ? 11 : 10;
   }
   const SIZE_LOG2 = pickSizeLog2();
-  const G_BASE = 4, G_AMP = 52;        // зелёный канал: от 4 до 56 из 255 (~+10% яркости к первой версии)
+  const G_BASE = 6, G_AMP = 70;        // зелёный канал: от 6 до 76 из 255 (v0.2.2: ярче примерно на треть)
 
   function padding(a, n) {             // n → 2n: значения в чётные клетки, остальные нули
     const m = n * 2, t = new Float32Array(m * m);
@@ -200,7 +200,7 @@
         const v = G_BASE + G_AMP * wave[x * n + y];
         const i = (y * n + x) * 4;
         // светлая тема (--monochrome-bg-mode: light): белый фон с едва заметными серыми разводами
-        const L = LIGHT ? 255 - v * 0.45 : 0;
+        const L = LIGHT ? 255 - v * 0.42 : 0;
         d[i] = Math.round((LIGHT ? L : v * TR) + Math.random() - 0.5);
         d[i + 1] = Math.round((LIGHT ? L : v * TG) + Math.random() - 0.5);
         d[i + 2] = Math.round((LIGHT ? L : v * TB) + Math.random() - 0.5);
