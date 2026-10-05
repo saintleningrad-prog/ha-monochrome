@@ -286,8 +286,18 @@
   // Смена темы в профиле: HA переписывает переменные в style у <html>. Следим только за этим атрибутом
   // (срабатывает лишь в момент смены темы) и перерисовываем узор, если изменился его оттенок.
   let lastTint = "";
+  // признак и цвета заставки для следующего открытия; вызывается из обоих мест, где замечаем тему Monochrome
+  function rememberBoot() {
+    try {
+      localStorage.setItem("monochromeBoot", optOn("boot", rootVar("--monochrome-boot") === "1") ? "1" : "0");
+      localStorage.setItem("monochromeBootColor", rootVar("--primary-text-color") || "#00ff41");
+      localStorage.setItem("monochromeBootFont", rootVar("--ha-font-family-body") || "monospace");
+      localStorage.setItem("monochromeBootBg", rootVar("--primary-background-color") || "#000");
+    } catch (e) {}
+  }
   new MutationObserver(() => {
     const tint = rootVar("--monochrome-bg-tint"), key = tint + "|" + rootVar("--monochrome-bg-mode");
+    if (tint) rememberBoot();
     if (tint && key !== lastTint && optOn("pattern", rootVar("--monochrome-pattern") !== "0")) {
       lastTint = key;
       idle(() => apply(tint));
@@ -299,15 +309,10 @@
   (function waitTheme() {
     const tint = rootVar("--monochrome-bg-tint");
     if (tint) {
+      rememberBoot();
       const key = tint + "|" + rootVar("--monochrome-bg-mode");
       if (key === lastTint) return;    // уже построен наблюдателем
       lastTint = key;
-      try {
-        localStorage.setItem("monochromeBoot", optOn("boot", rootVar("--monochrome-boot") === "1") ? "1" : "0");
-        localStorage.setItem("monochromeBootColor", rootVar("--primary-text-color") || "#00ff41");
-        localStorage.setItem("monochromeBootFont", rootVar("--ha-font-family-body") || "monospace");
-        localStorage.setItem("monochromeBootBg", rootVar("--primary-background-color") || "#000");
-      } catch (e) {}
       if (optOn("pattern", rootVar("--monochrome-pattern") !== "0")) idle(() => apply(tint));
       return;
     }

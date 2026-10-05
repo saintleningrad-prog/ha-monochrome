@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 DOMAIN = "monochrome"
-VERSION = "0.2.2"
+VERSION = "0.2.3"
 
 URL_BASE = "/monochrome_static"
 MODULE_FILE = "monochrome-effects.js"
