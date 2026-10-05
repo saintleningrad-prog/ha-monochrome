@@ -26,16 +26,16 @@ Home Assistant UI feel like a phosphor screen.
 | **Monochrome Paperwhite** | light: dark text on white, black double frames |
 
 ### Green
-![Monochrome Green](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/green.png?v=2)
+![Monochrome Green](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/green.png?v=3)
 
 ### Amber
-![Monochrome Amber](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/amber.png?v=2)
+![Monochrome Amber](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/amber.png?v=3)
 
 ### Paperblack
-![Monochrome Paperblack](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/paperblack.png?v=2)
+![Monochrome Paperblack](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/paperblack.png?v=3)
 
 ### Paperwhite
-![Monochrome Paperwhite](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/paperwhite.png?v=2)
+![Monochrome Paperwhite](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/paperwhite.png?v=3)
 
 ### Boot screen
 ![Boot screen](https://raw.githubusercontent.com/saintleningrad-prog/ha-monochrome/main/images/boot.png)
