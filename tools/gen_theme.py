@@ -179,7 +179,8 @@ def legacy(lite):
         "switch-checked-color": Y, "switch-checked-button-color": Y, "switch-checked-track-color": "#8a7f00",
         "switch-unchecked-button-color": GR, "switch-unchecked-track-color": "#5a5a5a",
         # стрелки, графики, статусы
-        "success-color": G, "warning-color": Y, "error-color": R, "info-color": "#00c832",
+        # шкалы и статусы — градация яркостью люминофора: норма тусклее, внимание ярче, опасно ярче всего
+        "success-color": "#00a32a", "warning-color": G, "error-color": "#c4ffd0", "info-color": "#00c832",
         "gauge-color": G,
         "graph-color-1": G, "graph-color-2": Y, "graph-color-3": "#7dff9e", "graph-color-4": "#00a82b",
         "graph-color-5": "#e6d200", "graph-color-6": "#ccffd1",
@@ -364,8 +365,10 @@ header = """# Темы «Monochrome» для Home Assistant (сгенериро�
 """
 themes = {
     "Monochrome Green": theme(False),
-    "Monochrome Amber": variant(AMBER_DIM, "1 0.69 0", active="#ffa200", track="#8a5a00",
-                                image_filter="hue-rotate(-95deg) saturate(1.4) brightness(0.85)"),
+    "Monochrome Amber": {**variant(AMBER_DIM, "1 0.69 0", active="#ffa200", track="#8a5a00",
+                                   image_filter="hue-rotate(-95deg) saturate(1.4) brightness(0.85)"),
+                         # шкалы и статусы яркостью янтаря: тусклый → янтарь → ярко-жёлто-оранжевый
+                         "success-color": "#9c6500", "warning-color": "#ffa200", "error-color": "#ffd84d"},
     "Monochrome Paperblack": paperblack(),
     "Monochrome Paperwhite": paperwhite_light(),
 }
