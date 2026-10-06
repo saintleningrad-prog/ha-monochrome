@@ -33,6 +33,7 @@ from .const import (
     CONF_GLITCH,
     CONF_GLITCH_EVERY,
     CONF_PATTERN,
+    CONF_IGNORE_REDUCED_MOTION,
     DEFAULTS,
     ATTR_DURATION,
     ATTR_INTENSITY,
@@ -61,6 +62,7 @@ CONFIG_SCHEMA = vol.Schema(
             vol.Schema(
                 {
                     vol.Optional(CONF_PATTERN): cv.boolean,
+                    vol.Optional(CONF_IGNORE_REDUCED_MOTION): cv.boolean,
                     vol.Optional(CONF_BOOT): cv.boolean,
                     vol.Optional(CONF_GLITCH): cv.boolean,
                     vol.Optional(CONF_GLITCH_EVERY): vol.All(vol.Coerce(int), vol.Range(min=5, max=600)),
@@ -123,7 +125,7 @@ def _module_url(entry: ConfigEntry) -> str:
     return (
         f"{URL_BASE}/{MODULE_FILE}?v={VERSION}"
         f"&glitch={flag(CONF_GLITCH)}&every={int(_option(entry, CONF_GLITCH_EVERY))}"
-        f"&boot={flag(CONF_BOOT)}&pattern={flag(CONF_PATTERN)}"
+        f"&boot={flag(CONF_BOOT)}&pattern={flag(CONF_PATTERN)}&motion={flag(CONF_IGNORE_REDUCED_MOTION)}"
     )
 
 

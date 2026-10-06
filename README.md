@@ -48,7 +48,7 @@ Home Assistant UI feel like a phosphor screen.
 - Boot screen, rare short **glitch** effect, also on demand from automations (`monochrome.glitch`)
 - Card titles on a solid backing, tile text follows the icon state color
 - No polling of the UI: effects run only on page load, navigation and theme change
-- Works in light and dark UI mode; respects “reduce motion”
+- Works in light and dark UI mode; respects “reduce motion” (can be overridden)
 
 ## Installation (HACS)
 
@@ -57,7 +57,7 @@ Home Assistant UI feel like a phosphor screen.
 3. **Settings → Devices & services → Add integration → Monochrome**.
 4. Profile → **Theme** → pick a Monochrome theme. Reload the page (Ctrl+F5).
 
-Options (gear on the integration): background pattern, boot screen, glitch on/off, glitch frequency.
+Options (gear on the integration): background pattern, boot screen, glitch on/off, glitch frequency, glitch even when the system asks to reduce motion.
 Changes apply after reloading the browser page.
 
 The integration copies the themes to `<config>/themes/monochrome.yaml`. Your `configuration.yaml` should
@@ -80,6 +80,7 @@ monochrome:
   glitch_every: 60    # average seconds between random glitches (5 to 600)
   boot: true          # boot screen on first open
   pattern: true       # live generated background
+  ignore_reduced_motion: false  # true: random glitches even when the system asks to reduce motion
 ```
 
 All keys are optional; missing ones use the defaults shown above (`glitch_every` defaults to 25).
@@ -127,7 +128,7 @@ tap_action:
     intensity: 5
 ```
 
-Tabs that are in the background, and browsers with "reduce motion" enabled, skip the glitch.
+Tabs that are in the background skip the glitch. Random glitches are also skipped when the system asks to reduce motion (common in remote desktop sessions) unless `ignore_reduced_motion` is enabled; glitches triggered by the service always run.
 The service is pushed to the browser over the existing Home Assistant connection, nothing is polled.
 
 ## Tinting your own images

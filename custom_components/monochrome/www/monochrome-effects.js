@@ -13,7 +13,7 @@
 
   const SELF = new URL(import.meta.url);
   const BASE = SELF.href.replace(/[^/]*$/, "");          // папка модуля (шрифты лежат в fonts/)
-  const OPT = Object.fromEntries(SELF.searchParams);     // glitch=0|1, every=секунд, boot=0|1, pattern=0|1
+  const OPT = Object.fromEntries(SELF.searchParams);     // glitch=0|1, every=секунд, boot=0|1, pattern=0|1, motion=0|1
   const optOn = (name, themeVal) => (OPT[name] === undefined ? themeVal : OPT[name] === "1");
 
   // шрифт: @font-face в документе действует и внутри shadow DOM интерфейса HA
@@ -231,7 +231,8 @@
   // сдвиг вбок, цветовой разъезд текста). Один таймер, без обхода DOM; на скрытой вкладке и при
   // «уменьшить движение» не срабатывает. Включение и частота — из темы: --monochrome-glitch (1/0),
   // --monochrome-glitch-every (среднее число секунд между сбоями).
-  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // «уменьшить движение» в системе выключает случайный глич, если в настройках не выбрано обратное (motion=1)
+  const reduceMotion = OPT.motion !== "1" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   // intensity 1..10 и duration (с) приходят от сервиса monochrome.glitch; без них обычный случайный сбой.
   function glitch(intensity, duration) {
     const host = document.createElement("div");
@@ -279,7 +280,7 @@
     const conn = document.querySelector("home-assistant")?.hass?.connection;
     if (!conn) { if (tries < 120) setTimeout(() => subscribeGlitch(tries + 1), 500); return; }
     conn.subscribeMessage(ev => {
-      if (!reduceMotion && !document.hidden && monochromeTheme()) glitch(ev.intensity, ev.duration);
+      if (!document.hidden && monochromeTheme()) glitch(ev.intensity, ev.duration);   // явный вызов сервиса: всегда
     }, { type: "monochrome/subscribe" }).catch(e => console.warn("monochrome-effects: glitch service unavailable", e));
   })(0);
 

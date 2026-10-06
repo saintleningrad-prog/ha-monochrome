@@ -19,7 +19,8 @@
           "pattern": "Live generated background pattern",
           "boot": "Boot screen on first open",
           "glitch": "Glitch effect",
-          "glitch_every": "Average seconds between glitches"
+          "glitch_every": "Average seconds between glitches",
+          "ignore_reduced_motion": "Glitch even when the system asks to reduce motion"
         }
       }
     },

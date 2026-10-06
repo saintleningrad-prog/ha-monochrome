@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 DOMAIN = "monochrome"
-VERSION = "0.2.4"
+VERSION = "0.2.5"
 
 URL_BASE = "/monochrome_static"
 MODULE_FILE = "monochrome-effects.js"
@@ -25,12 +25,14 @@ CONF_GLITCH = "glitch"
 CONF_GLITCH_EVERY = "glitch_every"
 CONF_BOOT = "boot"
 CONF_PATTERN = "pattern"
+CONF_IGNORE_REDUCED_MOTION = "ignore_reduced_motion"
 
 DEFAULTS = {
     CONF_GLITCH: True,
     CONF_GLITCH_EVERY: 25,
     CONF_BOOT: True,
     CONF_PATTERN: True,
+    CONF_IGNORE_REDUCED_MOTION: False,
 }
 
 SERVICE_GLITCH = "glitch"

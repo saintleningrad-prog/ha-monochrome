@@ -9,7 +9,15 @@ import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, ConfigFlowResult, OptionsFlow
 from homeassistant.core import callback
 
-from .const import CONF_BOOT, CONF_GLITCH, CONF_GLITCH_EVERY, CONF_PATTERN, DEFAULTS, DOMAIN
+from .const import (
+    CONF_BOOT,
+    CONF_GLITCH,
+    CONF_GLITCH_EVERY,
+    CONF_IGNORE_REDUCED_MOTION,
+    CONF_PATTERN,
+    DEFAULTS,
+    DOMAIN,
+)
 
 
 class MonochromeConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -54,6 +62,7 @@ class MonochromeOptionsFlow(OptionsFlow):
                 vol.Required(CONF_GLITCH_EVERY, default=opts[CONF_GLITCH_EVERY]): vol.All(
                     vol.Coerce(int), vol.Range(min=5, max=600)
                 ),
+                vol.Required(CONF_IGNORE_REDUCED_MOTION, default=opts[CONF_IGNORE_REDUCED_MOTION]): bool,
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)
